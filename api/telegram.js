@@ -43,7 +43,20 @@ async function askHQ(text) {
   });
   const data = await r.json();
   if (!r.ok) throw new Error(data?.error?.message || "OpenAI request failed");
-  return data.output_text || "Не удалось сформировать ответ.";
+  const outputText =
+    data.output_text ||
+    (data.output || [])
+      .flatMap(item => item.content || [])
+      .filter(part => part.type === "output_text" && part.text)
+      .map(part => part.text)
+      .join("\n")
+      .trim();
+
+  if (!outputText) {
+    console.error("OpenAI returned no text", JSON.stringify(data).slice(0, 2000));
+    throw new Error("OpenAI returned no output text");
+  }
+  return outputText;
 }
 
 export default async function handler(req, res) {
