@@ -1,4 +1,4 @@
-// Deployment refresh: 2026-09-19 — reload COMPOSIO_API_KEY
+// Deployment refresh: 2026-09-19 — reload corrected Composio ak_ key
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const COMPOSIO_API_KEY = process.env.COMPOSIO_API_KEY;
