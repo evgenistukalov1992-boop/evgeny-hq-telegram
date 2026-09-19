@@ -1,7 +1,7 @@
 // Deployment refresh: 2026-09-19 — reload corrected Composio ak_ key
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const COMPOSIO_API_KEY = process.env.COMPOSIO_API_KEY;
+const COMPOSIO_API_KEY = process.env.COMPOSIO_API_KEY1 || process.env.COMPOSIO_API_KEY;
 
 async function send(chatId, text) {
   const r = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -97,7 +97,7 @@ async function morningHQ(extra = "") {
 export default async function handler(req, res) {
   if (req.method === "GET") return res.status(200).json({
     ok: true, service: "Evgeny HQ Telegram",
-    ai: Boolean(OPENAI_API_KEY), yandexMail: Boolean(COMPOSIO_API_KEY)
+    ai: Boolean(OPENAI_API_KEY), yandexMail: Boolean(COMPOSIO_API_KEY), composioKeySource: process.env.COMPOSIO_API_KEY1 ? "COMPOSIO_API_KEY1" : (process.env.COMPOSIO_API_KEY ? "COMPOSIO_API_KEY" : "missing")
   });
   if (req.method !== "POST") return res.status(405).end();
 
